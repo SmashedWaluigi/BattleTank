@@ -1,9 +1,4 @@
-***************************************
-
-BattleTank/Content/StarterContent
-BattleTank/Content/BattleGround_Hi.umap
-
-***************************************
+*/Content/StarterContent
 
 # Visual Studio 2015 user specific files
 .vs/
