@@ -38,12 +38,31 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector OutHitLocation;
 	if (GetSightRayHitLocation(OutHitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *OutHitLocation.ToString());
-
+	//	UE_LOG(LogTemp, Warning, TEXT("Look Direction: %s"), *OutHitLocation.ToString());
 	}
 }
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
 {
-	OutHitLocation = FVector(1.0);
+	int32 ViewportSizeX, ViewportSizeY;
+	GetViewportSize(ViewportSizeX, ViewportSizeY);
+	auto ScreenLocation = FVector2D(ViewportSizeX * CrosshairXLocation, ViewportSizeY * CrosshairYLocation);
+
+	FVector LookDirection;
+
+	if (GetLookDirection(ScreenLocation, LookDirection))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Look Direction: %s"), *LookDirection.ToString());
+	}
 	return true;
+}
+
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
+{
+	FVector CameraWorldLocation; // To be discarded
+	return DeprojectScreenPositionToWorld(
+		ScreenLocation.X,
+		ScreenLocation.Y,
+		CameraWorldLocation,
+		LookDirection
+	);
 }
